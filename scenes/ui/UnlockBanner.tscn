@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/UnlockBanner.gd" id="1"]
+
+[node name="UnlockBanner" type="CanvasLayer"]
+script = ExtResource("1")
+
+[node name="Banner" type="PanelContainer" parent="."]
+anchor_left = 0.1
+anchor_right = 0.9
+offset_top = 70
+offset_bottom = 110
+
+[node name="Label" type="Label" parent="Banner"]
+horizontal_alignment = 1
+text = "💡 Unlock Shelf!"

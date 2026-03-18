@@ -1,0 +1,20 @@
+; Engine configuration file.
+[application]
+config/name="HardwareHavildar"
+run/main_scene="res://scenes/main/HomeScreen.tscn"
+config/features=PackedStringArray("4.2", "Mobile")
+
+[display]
+window/size/viewport_width=390
+window/size/viewport_height=844
+window/size/resizable=false
+window/stretch/mode="canvas_items"
+window/stretch/aspect="keep"
+window/handheld/orientation=1
+
+[rendering]
+renderer/rendering_method="mobile"
+
+[autoload]
+GameManager="*res://scripts/autoload/GameManager.gd"
+EventBus="*res://scripts/autoload/EventBus.gd"
