@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://scripts/main/Main.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/main/Background.gd" id="2"]
@@ -28,47 +28,47 @@ text = "🏪 HARDWARE HAVILDAR"
 add_theme_font_size_override/font_size = 22
 add_theme_color_override/font_color = Color(0.55, 0.08, 0.08, 1)
 
-[node name="BillingCounter" type="Node2D" parent="."]
+[node name="BillingCounter" parent="." instance=ExtResource("3")]
 position = Vector2(195, 500)
-instance = ExtResource("3")
 
-[node name="Godown" type="Node2D" parent="."]
+[node name="Godown" parent="." instance=ExtResource("4")]
 position = Vector2(195, 650)
-instance = ExtResource("4")
 
-[node name="NailsShelf" type="Node2D" parent="."]
+[node name="NailsShelf" parent="." instance=ExtResource("5")]
 position = Vector2(110, 270)
-instance = ExtResource("5")
+item_type = "nails"
+is_unlocked = true
 
-[node name="WireShelf" type="Node2D" parent="."]
+[node name="WireShelf" parent="." instance=ExtResource("5")]
 position = Vector2(280, 270)
-instance = ExtResource("5")
+item_type = "wire"
+is_unlocked = true
 
-[node name="PaintShelf" type="Node2D" parent="."]
+[node name="PaintShelf" parent="." instance=ExtResource("5")]
 position = Vector2(110, 160)
-instance = ExtResource("5")
+item_type = "paint"
+is_unlocked = false
+unlock_cost = 300
 
-[node name="PipesShelf" type="Node2D" parent="."]
+[node name="PipesShelf" parent="." instance=ExtResource("5")]
 position = Vector2(280, 160)
-instance = ExtResource("5")
+item_type = "pipes"
+is_unlocked = false
+unlock_cost = 150
 
-[node name="Player" type="CharacterBody2D" parent="."]
+[node name="Player" parent="." instance=ExtResource("6")]
 position = Vector2(195, 520)
-instance = ExtResource("6")
 
 [node name="CustomerSpawner" type="Node" parent="."]
 script = ExtResource("7")
 
-[node name="HUD" type="CanvasLayer" parent="."]
-instance = ExtResource("8")
+[node name="HUD" parent="." instance=ExtResource("8")]
 
-[node name="UnlockBanner" type="CanvasLayer" parent="."]
-instance = ExtResource("9")
+[node name="UnlockBanner" parent="." instance=ExtResource("9")]
 
 [node name="JoystickLayer" type="CanvasLayer" parent="."]
 
-[node name="Joystick" type="Control" parent="JoystickLayer"]
-instance = ExtResource("10")
+[node name="Joystick" parent="JoystickLayer" instance=ExtResource("10")]
 
 [node name="DoorLabel" type="Label" parent="."]
 position = Vector2(145, 790)
