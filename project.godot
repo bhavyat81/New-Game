@@ -1,16 +1,15 @@
 ; Engine configuration file.
 [application]
 config/name="HardwareHavildar"
-run/main_scene="res://scenes/main/HomeScreen.tscn"
+run/main_scene="res://scenes/main/Main.tscn"
 config/features=PackedStringArray("4.2", "Mobile")
 
 [display]
-window/size/viewport_width=390
-window/size/viewport_height=844
-window/size/resizable=false
+window/size/viewport_width=480
+window/size/viewport_height=854
+window/size/resizable=true
 window/stretch/mode="canvas_items"
-window/stretch/aspect="keep"
-window/handheld/orientation=1
+window/stretch/aspect="expand"
 
 [rendering]
 renderer/rendering_method="mobile"
