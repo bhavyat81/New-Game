@@ -1,13 +1,17 @@
 extends Node2D
 
-@onready var player = $Player
-@onready var joystick = $JoystickLayer/Joystick
-@onready var spawner = $CustomerSpawner
+@onready var player: CharacterBody2D = $Player
+@onready var spawner: Node = $CustomerSpawner
 
 func _ready():
 	GameManager.load_game()
-	joystick.direction_changed.connect(player.set_joystick_input)
-	# Tell spawner where shelves are
+
+	# Connect joystick to player
+	var joystick = $JoystickLayer/Joystick
+	if joystick and joystick.has_signal("direction_changed"):
+		joystick.direction_changed.connect(player.set_joystick_input)
+
+	# Tell spawner where shelves and counters are
 	spawner.shelf_positions = {
 		"nails": $NailsShelf.global_position,
 		"wire": $WireShelf.global_position,
