@@ -65,10 +65,35 @@ export function updateCustomerAI() {
 
     switch (customer.state) {
       case 'entering': {
+        // Walk from entrance into the store (toward center)
+        const storeEntryPos = { x: 180, y: 520 };
+        const newPos = moveTowards(customer.position, storeEntryPos, speed);
+        const dist = Math.abs(newPos.x - storeEntryPos.x) + Math.abs(newPos.y - storeEntryPos.y);
+
+        if (dist < 8) {
+          const targetShelfId = getShelfZoneForItem(customer.targetItem);
+          const shelf = shelves.find((s) => s.id === targetShelfId);
+          if (!shelf || !shelf.unlocked) {
+            // Shelf doesn't exist or is locked — leave immediately
+            store.updateCustomer(customer.id, { state: 'angry_exit' });
+          } else {
+            // Walk toward shelf regardless of current stock (may wait there)
+            store.updateCustomer(customer.id, {
+              position: storeEntryPos,
+              state: 'walking_to_shelf',
+            });
+          }
+        } else {
+          store.updateCustomer(customer.id, { position: newPos });
+        }
+        break;
+      }
+
+      case 'walking_to_shelf': {
         const targetShelfId = getShelfZoneForItem(customer.targetItem);
         const shelf = shelves.find((s) => s.id === targetShelfId);
 
-        if (!shelf || !shelf.unlocked || shelf.stock <= 0) {
+        if (!shelf || !shelf.unlocked) {
           store.updateCustomer(customer.id, { state: 'angry_exit' });
           return;
         }
@@ -78,18 +103,43 @@ export function updateCustomerAI() {
         const dist = Math.abs(newPos.x - shelfCenter.x) + Math.abs(newPos.y - shelfCenter.y);
 
         if (dist < 10) {
-          store.updateCustomer(customer.id, {
-            position: shelfCenter,
-            state: 'walking_to_billing',
-          });
-          // Reduce shelf stock
+          if (shelf.stock > 0) {
+            // Arrived at shelf with stock — pick up item and head to billing
+            store.updateCustomer(customer.id, {
+              position: shelfCenter,
+              state: 'walking_to_billing',
+            });
+            // Reduce shelf stock
+            const updatedShelves = shelves.map((s) =>
+              s.id === targetShelfId ? { ...s, stock: Math.max(0, s.stock - 1) } : s
+            );
+            useGameStore.setState({ shelves: updatedShelves });
+          } else {
+            // Arrived at shelf but empty — wait for restock
+            store.updateCustomer(customer.id, {
+              position: shelfCenter,
+              state: 'waiting_at_shelf',
+            });
+          }
+        } else {
+          store.updateCustomer(customer.id, { position: newPos });
+        }
+        break;
+      }
+
+      case 'waiting_at_shelf': {
+        // Customer is waiting at shelf (stock was empty, waiting for restock)
+        const targetShelfId = getShelfZoneForItem(customer.targetItem);
+        const shelf = shelves.find((s) => s.id === targetShelfId);
+        if (shelf && shelf.unlocked && shelf.stock > 0) {
+          // Stock has been restocked — pick up and go to billing
+          store.updateCustomer(customer.id, { state: 'walking_to_billing' });
           const updatedShelves = shelves.map((s) =>
             s.id === targetShelfId ? { ...s, stock: Math.max(0, s.stock - 1) } : s
           );
           useGameStore.setState({ shelves: updatedShelves });
-        } else {
-          store.updateCustomer(customer.id, { position: newPos });
         }
+        // patience drain is handled by decreaseCustomerPatience
         break;
       }
 

@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  Dimensions,
   StatusBar,
 } from 'react-native';
 import { router } from 'expo-router';
@@ -24,8 +23,6 @@ import Joystick from '../src/components/Joystick';
 import StoreFloor from '../src/components/StoreFloor';
 import { ZONES } from '../src/constants/layout';
 import { ItemType, ITEMS } from '../src/constants/items';
-
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 export default function GameScreen() {
   const {
@@ -212,7 +209,9 @@ export default function GameScreen() {
             godownItems={godownItems}
             pendingOrders={pendingOrders}
             onCollect={(type) => collectFromGodown(type as ItemType)}
+            onOrder={(type) => placeRestockOrder(type)}
             isPlayerHere={playerZone === 'godown'}
+            shelves={shelves}
           />
         </View>
 
@@ -245,26 +244,22 @@ export default function GameScreen() {
         {/* Joystick */}
         <Joystick onMove={handleJoystickMove} onRelease={handleJoystickRelease} />
 
-        {/* Action Buttons */}
-        <View style={styles.actionButtons}>
-          {shelves
-            .filter(
-              (s) =>
-                s.unlocked &&
-                s.stock <= 1 &&
-                !pendingOrders.some((o) => o.itemType === s.itemType)
-            )
-            .map((shelf) => (
-              <TouchableOpacity
-                key={shelf.id}
-                style={styles.restockBtn}
-                onPress={() => placeRestockOrder(shelf.itemType)}
-              >
-                <Text style={styles.restockBtnText}>
-                  📦 Order {ITEMS[shelf.itemType].name}
-                </Text>
-              </TouchableOpacity>
-            ))}
+        {/* Status Info */}
+        <View style={styles.statusInfo}>
+          {waitingAtBilling > 0 && (
+            <View style={styles.billingAlert}>
+              <Text style={styles.billingAlertText}>
+                💰 {waitingAtBilling} customer{waitingAtBilling > 1 ? 's' : ''} at billing!
+              </Text>
+            </View>
+          )}
+          {totalCarrying > 0 && (
+            <View style={styles.carryingInfo}>
+              <Text style={styles.carryingText}>
+                📦 {carryingItems.map((i) => `${ITEMS[i.type].emoji}×${i.quantity}`).join(' ')}
+              </Text>
+            </View>
+          )}
         </View>
 
         {/* Back Button */}
@@ -350,23 +345,32 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     gap: 8,
   },
-  actionButtons: {
+  statusInfo: {
     flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
     gap: 6,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  restockBtn: {
+  billingAlert: {
+    backgroundColor: '#F44336',
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  billingAlertText: {
+    color: '#FFF',
+    fontSize: 11,
+    fontWeight: 'bold',
+  },
+  carryingInfo: {
     backgroundColor: '#FF8C00',
     borderRadius: 8,
     paddingHorizontal: 10,
-    paddingVertical: 6,
+    paddingVertical: 4,
   },
-  restockBtnText: {
+  carryingText: {
     color: '#FFF',
-    fontSize: 10,
+    fontSize: 11,
     fontWeight: 'bold',
   },
   backButton: {
