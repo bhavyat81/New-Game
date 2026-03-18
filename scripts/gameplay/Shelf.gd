@@ -101,8 +101,8 @@ func _update_display() -> void:
 	if stock_label:
 		stock_label.text = str(current_stock) + "/" + str(max_stock)
 	if type_label:
-		var emoji := ITEM_EMOJIS.get(item_type, "📦")
-		var iname := ITEM_NAMES.get(item_type, item_type.capitalize())
+		var emoji: String = ITEM_EMOJIS.get(item_type, "📦")
+		var iname: String = ITEM_NAMES.get(item_type, item_type.capitalize())
 		if is_unlocked:
 			type_label.text = emoji + " " + iname
 		else:

@@ -43,8 +43,8 @@ func _input(event: InputEvent) -> void:
 			emit_signal("direction_changed", Vector2.ZERO)
 
 	elif event is InputEventScreenDrag and event.index == touch_id and touching:
-		var local := event.position - global_position - center
-		var clamped := local.limit_length(RADIUS)
+		var local: Vector2 = event.position - global_position - center
+		var clamped: Vector2 = local.limit_length(RADIUS)
 		knob_pos = center + clamped
 		queue_redraw()
 		emit_signal("direction_changed", clamped / RADIUS)
