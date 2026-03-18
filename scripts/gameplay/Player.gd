@@ -9,6 +9,10 @@ const ITEM_EMOJIS := {
 	"pipes": "🔧", "nuts": "🥜", "cement": "🧱"
 }
 
+func _ready() -> void:
+	add_to_group("player")
+	queue_redraw()
+
 func _physics_process(_delta: float) -> void:
 	var kb_dir := Vector2.ZERO
 	if Input.is_key_pressed(KEY_LEFT) or Input.is_key_pressed(KEY_A):

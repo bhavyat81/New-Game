@@ -15,6 +15,8 @@ func _ready():
 	spawner.shelf_positions = {
 		"nails": $NailsShelf.global_position,
 		"wire": $WireShelf.global_position,
+		"paint": $PaintShelf.global_position,
+		"pipes": $PipesShelf.global_position,
 	}
 	spawner.billing_pos = $BillingCounter.global_position
 	spawner.exit_pos = Vector2(195, 820)
