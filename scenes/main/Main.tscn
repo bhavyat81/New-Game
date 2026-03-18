@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://scripts/main/Main.gd" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/gameplay/BillingCounter.tscn" id="2"]
@@ -52,53 +52,35 @@ instance = ExtResource("3")
 [node name="NailsShelf" type="Node2D" parent="."]
 position = Vector2(110, 270)
 instance = ExtResource("4")
-script_property_overrides = {
-"item_type": "nails",
-"is_unlocked": true
-}
 
 [node name="WireShelf" type="Node2D" parent="."]
 position = Vector2(280, 270)
 instance = ExtResource("4")
-script_property_overrides = {
-"item_type": "wire",
-"is_unlocked": true
-}
 
 [node name="PaintShelf" type="Node2D" parent="."]
 position = Vector2(110, 160)
 instance = ExtResource("4")
-script_property_overrides = {
-"item_type": "paint",
-"is_unlocked": false,
-"unlock_cost": 300
-}
 
 [node name="PipesShelf" type="Node2D" parent="."]
 position = Vector2(280, 160)
 instance = ExtResource("4")
-script_property_overrides = {
-"item_type": "pipes",
-"is_unlocked": false,
-"unlock_cost": 150
-}
 
-[node name="Player" type="Node2D" parent="."]
+[node name="Player" type="CharacterBody2D" parent="."]
 position = Vector2(195, 520)
 instance = ExtResource("5")
 
 [node name="CustomerSpawner" type="Node" parent="."]
 script = ExtResource("6")
 
-[node name="HUD" type="Node" parent="."]
+[node name="HUD" type="CanvasLayer" parent="."]
 instance = ExtResource("7")
 
-[node name="UnlockBanner" type="Node" parent="."]
+[node name="UnlockBanner" type="CanvasLayer" parent="."]
 instance = ExtResource("8")
 
 [node name="JoystickLayer" type="CanvasLayer" parent="."]
 
-[node name="Joystick" type="Node" parent="JoystickLayer"]
+[node name="Joystick" type="Control" parent="JoystickLayer"]
 instance = ExtResource("9")
 
 [node name="DoorLabel" type="Label" parent="."]
