@@ -1,0 +1,106 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://scripts/main/Main.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/gameplay/BillingCounter.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/gameplay/Godown.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://scenes/gameplay/Shelf.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://scenes/gameplay/Player.tscn" id="5"]
+[ext_resource type="Script" path="res://scripts/gameplay/CustomerSpawner.gd" id="6"]
+[ext_resource type="PackedScene" path="res://scenes/ui/HUD.tscn" id="7"]
+[ext_resource type="PackedScene" path="res://scenes/ui/UnlockBanner.tscn" id="8"]
+[ext_resource type="PackedScene" path="res://scenes/ui/Joystick.tscn" id="9"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1")
+
+[node name="Background" type="ColorRect" parent="."]
+offset_left = 0
+offset_top = 0
+offset_right = 390
+offset_bottom = 844
+color = Color(0.96, 0.9, 0.78, 1)
+
+[node name="OutsideStrip" type="ColorRect" parent="."]
+offset_left = 0
+offset_top = 0
+offset_right = 390
+offset_bottom = 80
+color = Color(0.4, 0.7, 0.3, 1)
+
+[node name="TopWall" type="ColorRect" parent="."]
+offset_left = 0
+offset_top = 80
+offset_right = 390
+offset_bottom = 95
+color = Color(0.8, 0.1, 0.1, 1)
+
+[node name="GodownFloor" type="ColorRect" parent="."]
+offset_left = 0
+offset_top = 580
+offset_right = 390
+offset_bottom = 844
+color = Color(0.2, 0.14, 0.06, 1)
+
+[node name="BillingCounter" type="Node2D" parent="."]
+position = Vector2(195, 500)
+instance = ExtResource("2")
+
+[node name="Godown" type="Node2D" parent="."]
+position = Vector2(195, 650)
+instance = ExtResource("3")
+
+[node name="NailsShelf" type="Node2D" parent="."]
+position = Vector2(110, 270)
+instance = ExtResource("4")
+script_property_overrides = {
+"item_type": "nails",
+"is_unlocked": true
+}
+
+[node name="WireShelf" type="Node2D" parent="."]
+position = Vector2(280, 270)
+instance = ExtResource("4")
+script_property_overrides = {
+"item_type": "wire",
+"is_unlocked": true
+}
+
+[node name="PaintShelf" type="Node2D" parent="."]
+position = Vector2(110, 160)
+instance = ExtResource("4")
+script_property_overrides = {
+"item_type": "paint",
+"is_unlocked": false,
+"unlock_cost": 300
+}
+
+[node name="PipesShelf" type="Node2D" parent="."]
+position = Vector2(280, 160)
+instance = ExtResource("4")
+script_property_overrides = {
+"item_type": "pipes",
+"is_unlocked": false,
+"unlock_cost": 150
+}
+
+[node name="Player" type="Node2D" parent="."]
+position = Vector2(195, 520)
+instance = ExtResource("5")
+
+[node name="CustomerSpawner" type="Node" parent="."]
+script = ExtResource("6")
+
+[node name="HUD" type="Node" parent="."]
+instance = ExtResource("7")
+
+[node name="UnlockBanner" type="Node" parent="."]
+instance = ExtResource("8")
+
+[node name="JoystickLayer" type="CanvasLayer" parent="."]
+
+[node name="Joystick" type="Node" parent="JoystickLayer"]
+instance = ExtResource("9")
+
+[node name="DoorLabel" type="Label" parent="."]
+position = Vector2(145, 790)
+text = "🚪 ENTER"
